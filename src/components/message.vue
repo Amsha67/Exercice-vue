@@ -6,7 +6,7 @@
         {{ texte }} </p>         <!-- Affiche la variable texte -->
     
 
-    <p @click="afficherCompteur">  Nombre de texte généré : {{ compteur }}</p> <!-- Affiche le nombre de textes générés -->
+    <p @click="afficherCompteur">  Nombre de VU ET DE O maltraités par un clique: {{ compteur }}</p> <!-- Affiche le nombre de textes générés -->
 
     <input type="text" v-model="texteTape"> <!-- Mise à jour automatique en direct grace a v-model -->
 <p>{{ texteTape }}</p> <!-- Affiche ce que l'utilisateur tape -->
@@ -30,8 +30,37 @@
      (bleu / rouge)
 </button>
 
+
+<!-- Ajout de personnage en tableau-->
+  <input 
+      type="text" 
+      v-model="personneNom"
+      placeholder="Pseudo"> 
+
+    <input 
+      type="number" 
+      v-model="personnelvl"
+      placeholder="LVL"> 
+
+    <button @click="ajouterPersonne">
+      Ajouter le personnage
+    </button>
+
+    <ul>
+      <li v-for="(p, index) in personnes" :key="'perso-' + index">
+        {{ p.nom }} est niveau {{ p.lvl }} 
+      </li>
+    </ul>
     
 
+
+<button @click="analyserPersonnages">
+      Analyser les personnages
+    </button>
+
+    <p>
+      {{ resumePersonnes }} <!-- Résumé mis à jour après l'analyse -->
+    </p>
 </nav>
 
 </template>
@@ -42,15 +71,20 @@ export default {
 
   data() {       // Variables réactives utilisées dans le composant //
     return {
-        texte1: "VUVUVUVUVVUVUVUVU <----- NE PAS CLIQUER ICI",     // Message 1 //
-        texte2: "OOOOOOOOOOOOOOOOOOOO <----- NE PAS CLIQUER ICI",   // Message 2 //
-        texte: "VUVUVUVUVVUVUVUVU <----- NE PAS CLIQUER ICI",        // Message affiché au départ //
+        texte1: "NE PAS CLIQUER -----> ICIVUVUVUVUVVUVUVUVU <----- NE PAS CLIQUER ICI",     // Message 1 //
+        texte2: "NE PAS CLIQUER -----> OOOOOOOOOOOOOOOOOOOO <----- NE PAS CLIQUER ICI",   // Message 2 //
+        texte: "NE PAS CLIQUER -----> VUVUVUVUVVUVUVUVU <----- NE PAS CLIQUER ICI",        // Message affiché au départ //
         compteur: 0,                       // Compteur de changements du texte //
         texteTape: "",                   // Contient ce que l'utilisateur écrit //
         liste: [],                        // Liste vide au départ //
         texteBouton: "Rends-moi invisible", // Texte affiché au départ //
         visible: true,                      // Détermine si le texte est affiché ou non //
-        couleurRouge: true
+        couleurRouge: true,
+
+        personneNom: "",         
+        personnelvl: "",        
+        personnes: [],           
+        resumePersonnes: ""      
 
 
     };
@@ -89,12 +123,56 @@ export default {
 
     couleurtexte() {
     this.couleurRouge = !this.couleurRouge;
-}
+},
 
+    ajouterPersonne() {
+        
+        if (!this.personneNom || !this.personnelvl) { // Vérifie qu'on a bien un nom et un âge remplis //
+            console.log("Quel est votre nom et votre durée d'existence?"); // Message dans la console //
+            return;
+        }
+
+        // Ajoute un objet { nom, age } dans le tableau personnes //
+        this.personnes.push({
+            nom: this.personneNom,
+            lvl: this.personnelvl
+        });
+
+        // Vide les champs après l'ajout //
+        this.personneNom = "";
+        this.personnelvl = "";
+    },
+
+    analyserPersonnages() {
+
+        console.log("Liste complète des personnages :", this.personnes); 
+        // Affiche tout le tableau de personnages dans la console //
+
+        if (this.personnes.length === 0) { 
+            // Si aucun personnage n'a encore été ajouté //
+            this.resumePersonnes = "Aucun personnage enregistré pour le moment.";
+            return;
+        }
+
+        const nb = this.personnes.length; 
+        // Nombre total de personnages //
+
+        const niveaux = this.personnes.map(p => Number(p.lvl)); 
+        // Récupère tous les niveaux sous forme de nombres //
+
+        const total = niveaux.reduce((acc, valeur) => acc + valeur, 0); 
+        // Additionne tous les niveaux //
+
+        const moyenne = (total / nb).toFixed(1); 
+        // Calcule la moyenne des niveaux (1 chiffre après la virgule) //
+
+        this.resumePersonnes = 
+            "Personnages créés : " + nb + " | Niveau moyen : " + moyenne; 
+        // Met à jour le texte affiché sur la page //
              
-    }
+    },
 
-            
+  }        
 };
 
    
@@ -102,9 +180,94 @@ export default {
 
 
 
+
+
+
+
 <style scoped>
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    max-width: 700px;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    margin: auto;
+}
+
+nav p {
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    text-align: center;
+}
+
+nav input[type="text"],
+nav input[type="number"] {
+    padding: 0.5rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+nav button {
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    border: none;
+    background-color: #1976d2;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background-color: #135ea5;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 300px;
+}
+
+li {
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
 .boutoninvisible {
-    width: 180px;      
-    height: 40px;      /* Garde la taille de basse du bouton */
+    width: 180px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tableau des personnages */
+.table-personnes {
+    width: 100%;
+    max-width: 400px;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.table-personnes th,
+.table-personnes td {
+    border: 1px solid #ccc;
+    padding: 0.6rem;
+    text-align: center;
+}
+
+.table-personnes th {
+    background-color: #e0e0e0;
 }
 </style>
+
+
