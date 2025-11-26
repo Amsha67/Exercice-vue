@@ -42,9 +42,9 @@ export default {
 
   data() {       // Variables réactives utilisées dans le composant //
     return {
-        texte1: "VUVUVUVUVVUVUVUVU",     // Message 1 //
-        texte2: "OOOOOOOOOOOOOOOOOOOO",   // Message 2 //
-        texte: "VUVUVUVUVVUVUVUVU",        // Message affiché au départ //
+        texte1: "VUVUVUVUVVUVUVUVU <----- NE PAS CLIQUER ICI",     // Message 1 //
+        texte2: "OOOOOOOOOOOOOOOOOOOO <----- NE PAS CLIQUER ICI",   // Message 2 //
+        texte: "VUVUVUVUVVUVUVUVU <----- NE PAS CLIQUER ICI",        // Message affiché au départ //
         compteur: 0,                       // Compteur de changements du texte //
         texteTape: "",                   // Contient ce que l'utilisateur écrit //
         liste: [],                        // Liste vide au départ //
