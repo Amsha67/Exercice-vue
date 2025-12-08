@@ -1,6 +1,6 @@
 <template>
 
-<nav :style="{ color: couleurRouge ? 'red' : 'blue' }">
+<div :style="{ color: couleurRouge ? 'red' : 'blue' }">
 
     <p @click="changetexte"> <!-- J'appelle la fonction changetexte au clic -->
         {{ texte }} </p>         <!-- Affiche la variable texte -->
@@ -32,7 +32,9 @@
 
 
 <!-- Ajout de personnage en tableau-->
-  <input 
+ <p>Choisir un nom et définir un niveau :</p>
+  <input    
+  
       type="text" 
       v-model="personneNom"
       placeholder="Pseudo"> 
@@ -45,10 +47,13 @@
     <button @click="ajouterPersonne">
       Ajouter le personnage
     </button>
+    <p>Liste de personnages crées :</p>
 
-    <ul>
-      <li v-for="(p, index) in personnes" :key="'perso-' + index">
-        {{ p.nom }} est niveau {{ p.lvl }} 
+    <ul>  <!-- p = un éllement du tableau personne, index = position dans la liste -->
+      <li v-for="(p, index) in personnes" :key="'perso-' + index"> <!-- v-for crée une boucle pour afficher chaque personnages tant qu'il y en à -->
+       <!-- Le key sert à aider Vue à suivre quel élément est lequel dans la liste.-->
+        {{ p.nom }} est niveau {{ p.lvl }}
+          
       </li>
     </ul>
     
@@ -61,7 +66,7 @@
     <p>
       {{ resumePersonnes }} <!-- Résumé mis à jour après l'analyse -->
     </p>
-</nav>
+</div>
 
 </template>
 
@@ -128,7 +133,7 @@ export default {
     ajouterPersonne() {
         
         if (!this.personneNom || !this.personnelvl) { // Vérifie qu'on a bien un nom et un âge remplis //
-            console.log("Quel est votre nom et votre durée d'existence?"); // Message dans la console //
+            console.log("Aucun nom et niveau renseignés"); // Message dans la console //
             return;
         }
 
@@ -185,7 +190,7 @@ export default {
 
 
 <style scoped>
-nav {
+div {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -199,14 +204,14 @@ nav {
     margin: auto;
 }
 
-nav p {
+div p {
     font-family: Arial, sans-serif;
     font-size: 1rem;
     text-align: center;
 }
 
-nav input[type="text"],
-nav input[type="number"] {
+div input[type="text"],
+div input[type="number"] {
     padding: 0.5rem 0.6rem;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -215,7 +220,7 @@ nav input[type="number"] {
     box-sizing: border-box;
 }
 
-nav button {
+div button {
     padding: 0.6rem 1rem;
     border-radius: 4px;
     border: none;
@@ -225,7 +230,7 @@ nav button {
     cursor: pointer;
 }
 
-nav button:hover {
+div button:hover {
     background-color: #135ea5;
 }
 
